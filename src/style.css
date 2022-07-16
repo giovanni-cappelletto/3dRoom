@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
+:root {
+    --dark-grey: hsl(0, 0%, 20%);
+}
+
+html,
+body {
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--dark-grey);
+}
+
+.webgl {
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+}
