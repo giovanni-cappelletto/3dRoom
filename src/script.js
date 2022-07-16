@@ -28,16 +28,21 @@ const environmentMap = cubeTextureLoader.load([
 
 environmentMap.outputEncoding = THREE.sRGBEncoding
 
-const drawer = [null, 0]
+const drawerArray = [null, 0]
 
 const updateAllMaterials = () => {
     scene.traverse(child => {
+        const drawer = () => {
+            if (child.name === 'Drawer') {
+                drawerArray[0] = child 
+                drawerArray[1]++
+            }
+        }
+
+        window.addEventListener('touchstart', drawer)
         window.addEventListener('keydown', ({ key }) => {
             if (key === ' ') {
-                if (child.name === 'Drawer') {
-                    drawer[0] = child 
-                    drawer[1]++
-                }
+                drawer()
             }
         })
 
@@ -115,11 +120,14 @@ window.addEventListener('resize', () => {
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
 })
 
-const switchLamp = ({ key }) => {
-    if (key.toLowerCase() === 'o') lamp.intensity = lamp.intensity === 0 ? 1.5 : 0
+const switchLamp = () => {
+    lamp.intensity = lamp.intensity === 0 ? 1.5 : 0
 }
 
-window.addEventListener('keydown', switchLamp)
+window.addEventListener('keydown', ({ key }) => {
+    if (key.toLowerCase() === 'o') switchLamp()
+})
+window.addEventListener('touchend', switchLamp)
 
 // Controls
 const orbitControls = new OrbitControls(camera, canvas)
@@ -141,11 +149,11 @@ const tick = () => {
     const deltaTime = elapsedTime - oldElapsedTime
     oldElapsedTime = elapsedTime
 
-    if (drawer[0]) {
-        if (drawer[0].position.x > - 0.27 && drawer[1] % 2 !== 0) {
-            drawer[0].position.x += (- 0.27 * deltaTime)
-        } else if (drawer[0].position.x < - 0.24 && drawer[1] % 2 === 0) {
-            drawer[0].position.x += (0.27 * deltaTime)
+    if (drawerArray[0]) {
+        if (drawerArray[0].position.x > - 0.27 && drawerArray[1] % 2 !== 0) {
+            drawerArray[0].position.x += (- 0.27 * deltaTime)
+        } else if (drawerArray[0].position.x < - 0.24 && drawerArray[1] % 2 === 0) {
+            drawerArray[0].position.x += (0.27 * deltaTime)
         }   
     }
 
